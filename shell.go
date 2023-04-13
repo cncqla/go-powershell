@@ -1,6 +1,6 @@
 // Copyright (c) 2017 Gorillalabs. All rights reserved.
 
-package powershell
+package main
 
 import (
 	"fmt"
@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/bhendo/go-powershell/backend"
-	"github.com/bhendo/go-powershell/utils"
 	"github.com/juju/errors"
+	"go-powershell/backend"
+	"go-powershell/utils"
 )
 
 const newline = "\r\n"
@@ -44,7 +44,7 @@ func (s *shell) Execute(cmd string) (string, string, error) {
 	outBoundary := createBoundary()
 	errBoundary := createBoundary()
 
-	// wrap the command in special markers so we know when to stop reading from the pipes
+	// wrap the command in special markers, so we know when to stop reading from the pipes
 	full := fmt.Sprintf("%s; echo '%s'; [Console]::Error.WriteLine('%s')%s", cmd, outBoundary, errBoundary, newline)
 
 	_, err := s.stdin.Write([]byte(full))
